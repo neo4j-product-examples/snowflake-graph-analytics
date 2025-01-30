@@ -59,12 +59,6 @@ SELECT neo4j_graph_analytics.gds.write_nodeproperties('customer_graph',
 SELECT * FROM CUSTOMER_METRICS ORDER BY customer_segment;
 
 -- create customer purchase by segment view for downstream analytics
-SELECT *
-FROM customers
-         JOIN customer_node_mapping ON customer_node_mapping.customerId=customers.customerId
-         JOIN customer_metrics ON customer_node_mapping.nodeId=customer_metrics.nodeId
-ORDER BY customer_metrics.customer_segment DESC
-
 CREATE OR REPLACE VIEW CUSTOMER_PURCHASES AS
 SELECT customer_metrics.customer_segment,
        transactions.*,
