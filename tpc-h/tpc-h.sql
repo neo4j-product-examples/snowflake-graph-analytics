@@ -71,11 +71,12 @@ USE SCHEMA tpch_example.gds;
 -- Since we do not need any node properties, this will be the only column we project.
 -- Note, that the `nodeId` column is used to uniquely identify a node in the table.
 -- The uniqueness is usually achieved by using the primary key in that table, here 'p_partkey'.
-CREATE OR REPLACE VIEW parts (nodeId) AS
+CREATE OR REPLACE VIEW part (nodeId) AS
 SELECT p.p_partkey AS nodeId FROM snowflake_sample_data.tpch_sf1.part p;
 
 -- We do the same for the orders by projecting the `o_orderkey` to 'nodeId'.
-CREATE OR REPLACE VIEW orders (nodeId) AS
+-- Since order is a reserved word in SQL, we utilize a quoted identifier.
+CREATE OR REPLACE VIEW "Order" (nodeId) AS
 SELECT o.o_orderkey AS nodeId FROM snowflake_sample_data.tpch_sf1.orders o;
 
 -- The line items represent the relationship between parts and orders.
@@ -143,21 +144,23 @@ CALL gds.create_session('CPU_X64_L');
 -- The graph will be identified by the name "parts_in_orders".
 -- The mandatory parameters are the node tables and the relationship tables.
 -- A node table mapping points from a table/view to a node label that is used in the GDS graph.
--- For example, the rows of 'tpch_example.gds.parts' will be nodes labeles as 'Part'.
+-- The name of node label is based on the table/view name used in the projection, and case is preserved.
+-- For example, the rows of 'tpch_example.gds.Part' will be nodes labeled as 'Part'.
 -- Relationship tables need a bit more configuration.
--- Besides the type that is used in the GDS graph, here 'PART_IN_ORDER', we also need to specify source and target tables.
+-- We need to specify source and target tables.
+-- The relationships are represented as typed relationships is the GDS graph, where similarly to nodes, the table/view name is taken as the relationship type.
+-- For example, 'tpch_example.gds.part_in_order' below gives rise to the relationship 'part_in_order' in the GDS graph.
 -- We also specify the optional read concurrency to optimize building the graph projection.
 -- The concurrency can be set to the number of cores available on the compute pool node.
 SELECT gds.graph_project('parts_in_orders', {
-    'nodeTables': {
-        'tpch_example.gds.parts':  'Part',
-        'tpch_example.gds.orders': 'Order'
-    },
+    'nodeTables': [
+        'tpch_example.gds.Part',
+        'tpch_example.gds."Order"'
+    ],
     'relationshipTables': {
         'tpch_example.gds.part_in_order': {
-            'type': 'PART_IN_ORDER',
-            'sourceTable': 'tpch_example.gds.parts',
-            'targetTable': 'tpch_example.gds.orders',
+            'sourceTable': 'tpch_example.gds.Part',
+            'targetTable': 'tpch_example.gds."Order"',
             'orientation':  'NATURAL'
         }
     },
