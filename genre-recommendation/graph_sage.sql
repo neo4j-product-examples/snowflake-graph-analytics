@@ -27,6 +27,8 @@ GRANT USAGE, MONITOR ON schema genre_classification_db.imdb TO role gds_role;
 GRANT USAGE, MONITOR ON schema genre_classification_db.results TO role gds_role;
 GRANT SELECT ON ALL TABLES IN SCHEMA genre_classification_db.results TO role gds_role;
 GRANT SELECT ON ALL TABLES IN SCHEMA genre_classification_db.imdb TO role gds_role;
+GRANT SELECT ON ALL VIEWS IN SCHEMA genre_classification_db.results TO role gds_role;
+GRANT SELECT, MONITOR ON ALL VIEWS IN SCHEMA genre_classification_db.imdb TO role gds_role;
 GRANT ALL PRIVILEGES ON FUTURE TABLES IN SCHEMA genre_classification_db.results TO ROLE gds_role;
 GRANT ALL PRIVILEGES ON FUTURE TABLES IN SCHEMA genre_classification_db.imdb TO ROLE gds_role;
 
@@ -75,18 +77,24 @@ CALL Neo4j_GDS.graph.gs_nc_predict('GPU_NV_S', {
 -- Check the results of the predictions
 SELECT * FROM genre_classification_db.results.genre_predictions LIMIT 20;
 
+-- Create a view for movie table to exclude the genre column
+CREATE VIEW IF NOT EXISTS genre_classification_db.imdb.movie_plot AS
+SELECT nodeid, plot_keywords
+FROM genre_classification_db.imdb.movie;
+
 -- Training stage of the GraphSAGE unsupervised algorithm
 CALL Neo4j_GDS.graph.gs_unsup_train('GPU_NV_S', {
     'graph_config': {
         'default_table_prefix': 'genre_classification_db.imdb',
-        'node_tables': ['actor', 'director', 'movie'],
+        'node_tables': ['actor', 'director', 'movie_plot'],
         'relationship_tables': {
-            'acted_in': {'source_table': 'actor', 'target_table': 'movie', 'orientation': 'UNDIRECTED'},
-            'directed_in': {'source_table': 'director', 'target_table': 'movie', 'orientation': 'UNDIRECTED'}
+            'acted_in': {'source_table': 'actor', 'target_table': 'movie_plot', 'orientation': 'UNDIRECTED'},
+            'directed_in': {'source_table': 'director', 'target_table': 'movie_plot', 'orientation': 'UNDIRECTED'}
         }
     },
     'task_config': {
         'modelname': 'unsup-imdb',
+        'hidden_channels': 32,
         'num_epochs': 10,
         'num_samples': [20, 20]
     }
@@ -94,20 +102,19 @@ CALL Neo4j_GDS.graph.gs_unsup_train('GPU_NV_S', {
 
 -- Prediction stage of the GraphSAGE unsupervised algorithm - computing embeddings
 CALL Neo4j_GDS.graph.gs_unsup_predict('GPU_NV_S', {
-    'modelname': 'unsup-imdb',
     'graph_config': {
         'default_table_prefix': 'genre_classification_db.imdb',
-        'node_tables': ['actor', 'director', 'movie'],
+        'node_tables': ['actor', 'director', 'movie_plot'],
         'relationship_tables': {
-            'acted_in': {'source_table': 'actor', 'target_table': 'movie', 'orientation': 'UNDIRECTED'},
-            'directed_in': {'source_table': 'director', 'target_table': 'movie', 'orientation': 'UNDIRECTED'}
+            'acted_in': {'source_table': 'actor', 'target_table': 'movie_plot', 'orientation': 'UNDIRECTED'},
+            'directed_in': {'source_table': 'director', 'target_table': 'movie_plot', 'orientation': 'UNDIRECTED'}
         }
     },
     'task_config': {
         'modelname': 'unsup-imdb'
     },
     'output_config': [{
-        'node_label': 'movie',
+        'node_label': 'movie_plot',
         'output_table': 'genre_classification_db.results.movie_embeddings'
     }]
 });
