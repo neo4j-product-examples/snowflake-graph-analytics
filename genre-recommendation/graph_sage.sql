@@ -27,8 +27,6 @@ GRANT USAGE, MONITOR ON schema genre_classification_db.imdb TO role gds_role;
 GRANT USAGE, MONITOR ON schema genre_classification_db.results TO role gds_role;
 GRANT SELECT ON ALL TABLES IN SCHEMA genre_classification_db.results TO role gds_role;
 GRANT SELECT ON ALL TABLES IN SCHEMA genre_classification_db.imdb TO role gds_role;
-GRANT SELECT ON ALL VIEWS IN SCHEMA genre_classification_db.results TO role gds_role;
-GRANT SELECT, MONITOR ON ALL VIEWS IN SCHEMA genre_classification_db.imdb TO role gds_role;
 GRANT ALL PRIVILEGES ON FUTURE TABLES IN SCHEMA genre_classification_db.results TO ROLE gds_role;
 GRANT ALL PRIVILEGES ON FUTURE TABLES IN SCHEMA genre_classification_db.imdb TO ROLE gds_role;
 
@@ -78,9 +76,16 @@ CALL Neo4j_GDS.graph.gs_nc_predict('GPU_NV_S', {
 SELECT * FROM genre_classification_db.results.genre_predictions LIMIT 20;
 
 -- Create a view for movie table to exclude the genre column
+USE ROLE accountadmin;
+
 CREATE VIEW IF NOT EXISTS genre_classification_db.imdb.movie_plot AS
 SELECT nodeid, plot_keywords
 FROM genre_classification_db.imdb.movie;
+
+GRANT SELECT ON ALL VIEWS IN SCHEMA genre_classification_db.imdb TO ROLE gds_role;
+GRANT SELECT ON ALL VIEWS IN SCHEMA genre_classification_db.imdb TO APPLICATION Neo4j_GDS;
+
+USE ROLE gds_role;
 
 -- Training stage of the GraphSAGE unsupervised algorithm
 CALL Neo4j_GDS.graph.gs_unsup_train('GPU_NV_S', {
@@ -121,3 +126,7 @@ CALL Neo4j_GDS.graph.gs_unsup_predict('GPU_NV_S', {
 
 -- Check the embeddings
 SELECT * FROM genre_classification_db.results.movie_embeddings LIMIT 20;
+
+-- Existing embeddings can be deleted if needed
+CALL Neo4j_GDS.graph.drop_model('nc-imdb');
+CALL Neo4j_GDS.graph.drop_model('unsup-imdb');
