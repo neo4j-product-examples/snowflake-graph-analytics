@@ -10,6 +10,16 @@ Snowflake requires a particular format, which they outline [here](https://github
 
 ## H2 Headers will Denote a New "Slide" in the Quickstart
 ```
+## Required Content
+In general, we will need the following content:
+- An overview slide (format shown below)
+- Where to get the data
+- How to set up permissions
+- How to clean the data (if needed)
+- Running the algorithm
+- Examining results
+- Conclusions and Resources 
+
 ## Overview Slide Content
 Please include the following content in your Overview slide:
 
