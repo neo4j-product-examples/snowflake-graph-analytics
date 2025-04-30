@@ -7,9 +7,6 @@ GRANT USAGE ON DATABASE genre_classification_db TO APPLICATION Neo4j_GDS;
 GRANT USAGE ON SCHEMA genre_classification_db.results TO APPLICATION Neo4j_GDS;
 GRANT USAGE ON SCHEMA genre_classification_db.imdb TO APPLICATION Neo4j_GDS;
 
-GRANT CREATE STAGE ON SCHEMA genre_classification_db.results TO APPLICATION Neo4j_GDS;
-GRANT CREATE STAGE ON SCHEMA genre_classification_db.imdb TO APPLICATION Neo4j_GDS;
-
 GRANT SELECT ON ALL TABLES IN SCHEMA genre_classification_db.results TO APPLICATION Neo4j_GDS;
 GRANT SELECT ON ALL TABLES IN SCHEMA genre_classification_db.imdb TO APPLICATION Neo4j_GDS;
 
