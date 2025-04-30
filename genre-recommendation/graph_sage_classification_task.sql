@@ -35,38 +35,38 @@ USE WAREHOUSE <A_WAREHOUSE>;
 
 -- Training stage of the GraphSAGE node classification algorithm
 CALL Neo4j_GDS.graph.gs_nc_train('GPU_NV_S', {
-    'graph_config': {
-        'default_table_prefix': 'genre_classification_db.imdb',
-        'node_tables': ['actor', 'director', 'movie'],
-        'relationship_tables': {
-            'acted_in': {'source_table': 'actor', 'target_table': 'movie', 'orientation': 'UNDIRECTED'},
-            'directed_in': {'source_table': 'director', 'target_table': 'movie', 'orientation': 'UNDIRECTED'}
+    'project': {
+        'defaultTablePrefix': 'genre_classification_db.imdb',
+        'nodeTables': ['actor', 'director', 'movie'],
+        'relationshipTables': {
+            'acted_in': {'sourceTable': 'actor', 'targetTable': 'movie', 'orientation': 'UNDIRECTED'},
+            'directed_in': {'sourceTable': 'director', 'targetTable': 'movie', 'orientation': 'UNDIRECTED'}
         }
     },
-    'task_config': {
+    'compute': {
         'modelname': 'nc-imdb',
-        'num_epochs': 10,
-        'num_samples': [20, 20],
-        'target_label': 'movie',
-        'target_property': 'genre',
-        'class_weights': true
+        'numEpochs': 10,
+        'numSamples': [20, 20],
+        'targetLabel': 'movie',
+        'targetProperty': 'genre',
+        'classWeights': true
     }
 });
 
 -- Prediction stage of the GraphSAGE node classification algorithm
 CALL Neo4j_GDS.graph.gs_nc_predict('GPU_NV_S', {
-    'graph_config': {
-        'default_table_prefix': 'genre_classification_db.imdb',
-        'node_tables': ['actor', 'director', 'movie'],
-        'relationship_tables': {
-            'acted_in': {'source_table': 'actor', 'target_table': 'movie', 'orientation': 'UNDIRECTED'},
-            'directed_in': {'source_table': 'director', 'target_table': 'movie', 'orientation': 'UNDIRECTED'}
+    'project': {
+        'defaultTablePrefix': 'genre_classification_db.imdb',
+        'nodeTables': ['actor', 'director', 'movie'],
+        'relationshipTables': {
+            'acted_in': {'sourceTable': 'actor', 'targetTable': 'movie', 'orientation': 'UNDIRECTED'},
+            'directed_in': {'sourceTable': 'director', 'targetTable': 'movie', 'orientation': 'UNDIRECTED'}
         }
     },
-    'task_config': {
+    'compute': {
         'modelname': 'nc-imdb'
     },
-    'output_config': [{'node_label': 'movie', 'output_table': 'genre_classification_db.results.genre_predictions'}]
+    'write': [{'nodeLabel': 'movie', 'outputTable': 'genre_classification_db.results.genre_predictions'}]
 });
 
 -- Check the results of the predictions

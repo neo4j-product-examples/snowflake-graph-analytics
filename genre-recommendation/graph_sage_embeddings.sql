@@ -47,38 +47,38 @@ USE ROLE gds_role;
 
 -- Training stage of the GraphSAGE unsupervised algorithm
 CALL Neo4j_GDS.graph.gs_unsup_train('GPU_NV_S', {
-    'graph_config': {
-        'default_table_prefix': 'genre_classification_db.imdb',
-        'node_tables': ['actor', 'director', 'movie_plot'],
-        'relationship_tables': {
-            'acted_in': {'source_table': 'actor', 'target_table': 'movie_plot', 'orientation': 'UNDIRECTED'},
-            'directed_in': {'source_table': 'director', 'target_table': 'movie_plot', 'orientation': 'UNDIRECTED'}
+    'project': {
+        'defaultTablePrefix': 'genre_classification_db.imdb',
+        'nodeTables': ['actor', 'director', 'movie_plot'],
+        'relationshipTables': {
+            'acted_in': {'sourceTable': 'actor', 'targetTable': 'movie_plot', 'orientation': 'UNDIRECTED'},
+            'directed_in': {'sourceTable': 'director', 'targetTable': 'movie_plot', 'orientation': 'UNDIRECTED'}
         }
     },
-    'task_config': {
+    'compute': {
         'modelname': 'unsup-imdb',
-        'hidden_channels': 32,
-        'num_epochs': 10,
-        'num_samples': [20, 20]
+        'hiddenChannels': 32,
+        'numEpochs': 10,
+        'numSamples': [20, 20]
     }
 });
 
 -- Prediction stage of the GraphSAGE unsupervised algorithm - computing embeddings
 CALL Neo4j_GDS.graph.gs_unsup_predict('GPU_NV_S', {
-    'graph_config': {
-        'default_table_prefix': 'genre_classification_db.imdb',
-        'node_tables': ['actor', 'director', 'movie_plot'],
-        'relationship_tables': {
-            'acted_in': {'source_table': 'actor', 'target_table': 'movie_plot', 'orientation': 'UNDIRECTED'},
-            'directed_in': {'source_table': 'director', 'target_table': 'movie_plot', 'orientation': 'UNDIRECTED'}
+    'project': {
+        'defaultTablePrefix': 'genre_classification_db.imdb',
+        'nodeTables': ['actor', 'director', 'movie_plot'],
+        'relationshipTables': {
+            'acted_in': {'sourceTable': 'actor', 'targetTable': 'movie_plot', 'orientation': 'UNDIRECTED'},
+            'directed_in': {'sourceTable': 'director', 'targetTable': 'movie_plot', 'orientation': 'UNDIRECTED'}
         }
     },
-    'task_config': {
+    'compute': {
         'modelname': 'unsup-imdb'
     },
-    'output_config': [{
-        'node_label': 'movie_plot',
-        'output_table': 'genre_classification_db.results.movie_embeddings'
+    'write': [{
+        'nodeLabel': 'movie_plot',
+        'outputTable': 'genre_classification_db.results.movie_embeddings'
     }]
 });
 
