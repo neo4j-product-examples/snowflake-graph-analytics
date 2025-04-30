@@ -17,5 +17,5 @@ The snowflake host depends on region but can be for example, `snowflake.eu-west-
 
 ## Running GraphSAGE on IMDB in Snowflake
 
-The file `imdb/graph_sage.sql` is provided that you can run for example from inside the SnowsightUI after installing the Snowflake application `Neo4j Graph Analytics` inside your Snowflake account.
+The files `genre-recommendation/graph_sage_classification_task.sql` and `genre-recommendation/graph_sage_embeddings.sql` are provided that you can run for example from inside the SnowsightUI after installing the Snowflake application `Neo4j Graph Analytics` inside your Snowflake account.
 This sql file is a template in which you need to replace the placeholders.
