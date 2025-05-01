@@ -1,4 +1,4 @@
-# TPC-H Quickstart
+# Basket Analysis Quickstart
 
 This example shows how to use Neo4j Graph Analytics within Snowflake to calculate similarity between parts based on their orders.
 
@@ -20,4 +20,4 @@ In the exercise, we will be working with structured, comma-delimited data that h
 ## Running the Example
 
 ### Steps
-The `TPC-H.ipynb` notebook has the full example.
+The `Basket-Analysis.ipynb` notebook has the full example.
