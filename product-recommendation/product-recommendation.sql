@@ -99,12 +99,12 @@ USE DATABASE NEO4J_GRAPH_ANALYTICS;
 
 -- Next, we want to consider the warehouse that the application will use to execute queries.
 -- For this example, we use a MEDIUM-size warehouse, so we configure the application's warehouse accordingly
-ALTER WAREHOUSE Neo4j_GDS_app_warehouse SET WAREHOUSE_SIZE='MEDIUM';
-GRANT USAGE ON WAREHOUSE Neo4j_GDS_app_warehouse TO APPLICATION NEO4J_GRAPH_ANALYTICS;
+ALTER WAREHOUSE NEO4J_GRAPH_ANALYTICS_app_warehouse SET WAREHOUSE_SIZE='MEDIUM';
+GRANT USAGE ON WAREHOUSE NEO4J_GRAPH_ANALYTICS_app_warehouse TO APPLICATION NEO4J_GRAPH_ANALYTICS;
 -- A highly performant warehouse can speed up graph projections but does not affect algorithm computation.
 -- Especially if the views are more complex than shown in this example, a more performant warehouse is beneficial.
 -- The warehouse can then be brought back to a less expensive configuration after the projection is done.
--- ALTER WAREHOUSE Neo4j_GDS_app_warehouse WAREHOUSE_SIZE='X-SMALL';
+-- ALTER WAREHOUSE NEO4J_GRAPH_ANALYTICS_app_warehouse WAREHOUSE_SIZE='X-SMALL';
 
 -- The following grants are necessary for the application to read and write data.
 -- The next queries are required to read from our prepared views.
