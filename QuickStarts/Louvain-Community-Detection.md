@@ -51,27 +51,35 @@ Next let's set up the necessary roles, permissions, and resource access to enabl
 It also provides the application with access to the required compute pool and warehouse resources needed to run graph algorithms at scale.
 
 ```sql
-USE SCHEMA p2p_demo.public;
+USE SCHEMA P2P_DEMO.PUBLIC;
 
--- Create a consumer role for users of the GDS application
-CREATE ROLE IF NOT EXISTS gds_role;
-GRANT APPLICATION ROLE se_snow_neo4j_graph_analytics.app_user TO ROLE gds_role;
--- Create a consumer role for administrators of the GDS application
-CREATE ROLE IF NOT EXISTS gds_role;
-GRANT APPLICATION ROLE se_snow_neo4j_graph_analytics.app_admin TO ROLE gds_role;
+-- Create a consumer role for users and admins of the GDS application
+CREATE ROLE IF NOT EXISTS gds_user_role;
+CREATE ROLE IF NOT EXISTS gds_admin_role;
+GRANT APPLICATION ROLE neo4j_graph_analytics.app_user TO ROLE gds_user_role;
+GRANT APPLICATION ROLE neo4j_graph_analytics.app_admin TO ROLE gds_admin_role;
+
+CREATE DATABASE ROLE IF NOT EXISTS gds_db_role;
+GRANT DATABASE ROLE gds_db_role TO ROLE gds_user_role;
+GRANT DATABASE ROLE gds_db_role TO APPLICATION neo4j_graph_analytics;
 
 -- Grant access to consumer data
--- The application reads consumer data to build a graph object, and it also writes results into new tables.
--- We therefore need to grant the right permissions to give the application access.
-GRANT USAGE ON DATABASE p2p_demo TO APPLICATION se_snow_neo4j_graph_analytics;
-GRANT USAGE ON SCHEMA p2p_demo.public TO APPLICATION se_snow_neo4j_graph_analytics;
+GRANT USAGE ON DATABASE P2P_DEMO TO ROLE gds_user_role;
+GRANT USAGE ON SCHEMA P2P_DEMO.PUBLIC TO ROLE gds_user_role;
 
--- required to read tabular data into a graph
-GRANT SELECT ON ALL TABLES IN SCHEMA p2p_demo.public TO APPLICATION se_snow_neo4j_graph_analytics;
--- required to write computation results into a table
-GRANT CREATE TABLE ON SCHEMA p2p_demo.public TO APPLICATION se_snow_neo4j_graph_analytics;
--- optional, ensuring the consumer role has access to tables created by the application
-GRANT ALL PRIVILEGES ON FUTURE TABLES IN SCHEMA p2p_demo.public TO ROLE gds_role;
+-- Required to read tabular data into a graph
+GRANT SELECT ON ALL TABLES IN DATABASE P2P_DEMO TO DATABASE ROLE gds_db_role;
+
+-- Ensure the consumer role has access to created tables/views
+GRANT ALL PRIVILEGES ON FUTURE TABLES IN SCHEMA P2P_DEMO.PUBLIC TO DATABASE ROLE gds_db_role;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA P2P_DEMO.PUBLIC TO DATABASE ROLE gds_db_role;
+GRANT CREATE TABLE ON SCHEMA P2P_DEMO.PUBLIC TO DATABASE ROLE gds_db_role;
+GRANT CREATE VIEW ON SCHEMA P2P_DEMO.PUBLIC TO DATABASE ROLE gds_db_role;
+GRANT ALL PRIVILEGES ON FUTURE VIEWS IN SCHEMA P2P_DEMO.PUBLIC TO DATABASE ROLE gds_db_role;
+GRANT ALL PRIVILEGES ON ALL VIEWS IN SCHEMA P2P_DEMO.PUBLIC TO DATABASE ROLE gds_db_role;
+
+-- Compute and warehouse access
+GRANT USAGE ON WAREHOUSE GDSONSNOWFLAKE TO APPLICATION neo4j_graph_analytics;
 ```
 
 Now we will switch to the role we just created:
@@ -159,7 +167,7 @@ But broadly, you will need a few things:
 
 
 ```sql
-CALL se_snow_neo4j_graph_analytics.graph.louvain('CPU_X64_XS', {
+CALL neo4j_graph_analytics.graph.louvain('CPU_X64_XS', {
     'project': {
         'nodeTables': ['p2p_demo.public.p2p_users_vw'],
         'relationshipTables': {
