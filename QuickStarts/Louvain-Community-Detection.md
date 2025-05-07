@@ -124,7 +124,7 @@ CREATE OR REPLACE VIEW p2p_users_vw (nodeId) AS
 ## Step 4: Running your Algorithms
 Now we are finally at the step where we create a projection, run our algorithms, and write back to snowflake. We will run louvain to determine communities within our data. Louvain identifies communities by grouping together nodes that have more connections to each other than to nodes outside the group.
 
-You can find more information about writing this function in our [documentation](https://neo4j.com/docs/snowflake-graph-analytics/preview/installation/).
+You can find more information about writing this function in our [documentation](https://neo4j.com/docs/snowflake-graph-analytics/current/getting-started/).
 
 You can use this code block as an outline of what you need to fill in:
 
