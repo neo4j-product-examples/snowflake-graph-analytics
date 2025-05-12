@@ -15,6 +15,7 @@ Finding different communities within P2P transactions is the first step towards 
 ### What You Will Need
 - Active Snowflake account with appropriate access to databases and schemas.
 - Neo4j Graph Analytics application installed from the Snowflake marketplace. Access the marketplace via the menu bar on the left hand side of your screen, as seen below:
+![alt text](https://github.com/neo4j-product-examples/snowflake-graph-analytics/blob/main/QuickStarts/images/marketplace.png)
 
 ### What You Will Learn
 - How to prepare and project your data for graph analytics
@@ -23,6 +24,11 @@ Finding different communities within P2P transactions is the first step towards 
 
 ### What You Will Build
 - A method to identify communities that are at high risk of fraud in P2P networks
+
+### Import the Notebook
+- We’ve provided a Colab notebook to walk you through each SQL and Python step—no local setup required!
+- Download the .ipnyb found [here](https://drive.google.com/drive/u/1/folders/1BnAnRSEfuwDvc4eQH8IRvy3tUkwOeaNf), and import the notebook into snowflake.
+  ![alt text](https://github.com/neo4j-product-examples/snowflake-graph-analytics/blob/main/QuickStarts/images/followalong.png)
 
 <!-- ------------------------ -->
 ## Step 1: Loading the Data
@@ -193,6 +199,7 @@ from p2p_demo.public.p2p_users_vw_lou
 group by community
 order by community_size desc;
 ```
+
 We can then use then add in the `fraud_transfer_flag` (which was provided by the vendor) to our communities to see if users in that community are at greater risk for fraud:
 
 ```sql
@@ -211,6 +218,10 @@ GROUP BY
 ORDER BY
   community_size DESC, fraud_count DESC;
 ```
+You can use plotly as a visualization package and explore more. Nodes that cluster closely represent communities of highly interconnected users.  
+You can immediately spot the tight clusters (possible fraud rings) versus the loosely connected periphery.
+![alt text](https://github.com/neo4j-product-examples/snowflake-graph-analytics/blob/main/QuickStarts/images/communities%20visualization.png)
+
 ##  Conclusions and Resources
 In this quickstart, you learned how to bring the power of graph insights into Snowflake using Neo4j Graph Analytics. By working with a P2P transaction dataset, you were able to:
 
