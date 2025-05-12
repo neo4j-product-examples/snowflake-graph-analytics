@@ -29,6 +29,7 @@ Finding different communities within P2P transactions is the first step towards 
 - We’ve provided a Colab notebook to walk you through each SQL and Python step—no local setup required!
 - Download the .ipnyb found [here](https://drive.google.com/drive/u/1/folders/1BnAnRSEfuwDvc4eQH8IRvy3tUkwOeaNf), and import the notebook into snowflake.
   ![alt text](https://github.com/neo4j-product-examples/snowflake-graph-analytics/blob/main/QuickStarts/images/followalong.png)
+- Don't forget to install streamlit and python package before you run. 
 
 <!-- ------------------------ -->
 ## Step 1: Loading the Data
@@ -218,7 +219,7 @@ GROUP BY
 ORDER BY
   community_size DESC, fraud_count DESC;
 ```
-You can use plotly as a visualization package and explore more. Nodes that cluster closely represent communities of highly interconnected users.  
+You can use plotly as a visualization package and explore more. Nodes that cluster closely represent communities of highly interconnected users. Find more on exploratory analysis and demos [here](https://github.com/neo4j-product-examples/snowflake-graph-analytics).
 You can immediately spot the tight clusters (possible fraud rings) versus the loosely connected periphery.
 ![alt text](https://github.com/neo4j-product-examples/snowflake-graph-analytics/blob/main/QuickStarts/images/communities%20visualization.png)
 
