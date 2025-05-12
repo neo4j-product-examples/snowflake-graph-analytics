@@ -19,7 +19,7 @@ Finding different communities within P2P transactions is the first step towards 
 
 ### What You Will Build
 - A method to identify communities that are at high risk of fraud in P2P networks
-- 
+  
 ### What You Will Learn
 - How to prepare and project your data for graph analytics
 - How to use community detection to identify fraud
@@ -143,7 +143,7 @@ You can find more information about writing this function in our [documentation]
 You can use this code block as an outline of what you need to fill in:
 
 ```
-CALL Neo4j_GDS_app.graph.wcc('COMPUTE_POOL', {
+CALL Neo4j_GDS_app.graph.louvain('COMPUTE_POOL', {
     'project': {
         'nodeTables': ['EXAMPLE_DB.DATA_SCHEMA.NODES'],
         'relationshipTables': {
