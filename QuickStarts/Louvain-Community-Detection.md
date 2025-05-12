@@ -184,7 +184,7 @@ CALL neo4j_graph_analytics.graph.louvain('CPU_X64_XS', {
             }
         }
     },
-    'compute': { 'consecutiveIds': true },
+    'compute': { 'consecutiveIds': true, 'relationshipWeightProperty':'TOTAL_AMOUNT'},
     'write': [{
         'nodeLabel': 'p2p_users_vw',
         'outputTable': 'p2p_demo.public.p2p_users_vw_lou'
