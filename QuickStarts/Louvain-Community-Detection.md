@@ -10,7 +10,7 @@ P2P Fraud Losses are Skyrocketing. 8% of banking customers reported being victim
 Finding different communities within P2P transactions is the first step towards identifying and ultimately ending P2P fraud. 
 
 ### Prerequisites
-- The Native App Neo4j Graph Analytics for Snowflake
+- The Native App [Neo4j Graph Analytics](https://app.snowflake.com/marketplace/listing/GZTDZH40CN) for Snowflake
   
 ### What You Will Need
 - Active Snowflake account with appropriate access to databases and schemas.
@@ -219,13 +219,12 @@ GROUP BY
 ORDER BY
   community_size DESC, fraud_count DESC;
 ```
-You can use plotly as a visualization package and explore more. Nodes that cluster closely represent communities of highly interconnected users. Find more on exploratory analysis and demos [here](https://github.com/neo4j-product-examples/snowflake-graph-analytics).
-You can immediately spot the tight clusters (possible fraud rings) versus the loosely connected periphery.
+You can use plotly as a visualization package and explore more. Nodes that cluster closely represent communities of highly interconnected users. You can immediately spot the tight clusters (possible fraud rings) versus the loosely connected periphery. Find more on exploratory analysis and demos [here](https://github.com/neo4j-product-examples/snowflake-graph-analytics).
 ![alt text](https://github.com/neo4j-product-examples/snowflake-graph-analytics/blob/main/QuickStarts/images/communities%20visualization.png)
 
 ##  Conclusions and Resources
 In this quickstart, you learned how to bring the power of graph insights into Snowflake using Neo4j Graph Analytics. By working with a P2P transaction dataset, you were able to:
 
-1. Set up the Neo4j Graph Analytics application within Snowflake.
+1. Set up the [Neo4j Graph Analytics](https://app.snowflake.com/marketplace/listing/GZTDZH40CN) application within Snowflake.
 2. Prepare and project your data into a graph model (users as nodes, transactions as relationships).
 3. Ran Louvain community detection to identify clusters of users with high internal interaction.
