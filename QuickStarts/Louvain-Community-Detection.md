@@ -27,7 +27,7 @@ Finding different communities within P2P transactions is the first step towards 
 
 ### Import the Notebook
 - We’ve provided a Colab notebook to walk you through each SQL and Python step—no local setup required!
-- Download the .ipnyb found [here](https://drive.google.com/drive/u/1/folders/1BnAnRSEfuwDvc4eQH8IRvy3tUkwOeaNf), and import the notebook into snowflake.
+- Download the .ipynb found [here](https://github.com/neo4j-product-examples/snowflake-graph-analytics/tree/main/QuickStarts/Python%20Notebooks), and import the notebook into snowflake.
   ![alt text](https://github.com/neo4j-product-examples/snowflake-graph-analytics/blob/main/QuickStarts/images/followalong.png)
 - Don't forget to install streamlit and python package before you run. 
 
