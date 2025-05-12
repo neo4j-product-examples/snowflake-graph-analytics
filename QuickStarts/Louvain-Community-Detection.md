@@ -17,13 +17,13 @@ Finding different communities within P2P transactions is the first step towards 
 - Neo4j Graph Analytics application installed from the Snowflake marketplace. Access the marketplace via the menu bar on the left hand side of your screen, as seen below:
 ![alt text](https://github.com/neo4j-product-examples/snowflake-graph-analytics/blob/main/QuickStarts/images/marketplace.png)
 
+### What You Will Build
+- A method to identify communities that are at high risk of fraud in P2P networks
+- 
 ### What You Will Learn
 - How to prepare and project your data for graph analytics
 - How to use community detection to identify fraud
 - How to read and write directly from and to your snowflake tables
-
-### What You Will Build
-- A method to identify communities that are at high risk of fraud in P2P networks
 
 ### Import the Notebook
 - We’ve provided a Colab notebook to walk you through each SQL and Python step—no local setup required!
