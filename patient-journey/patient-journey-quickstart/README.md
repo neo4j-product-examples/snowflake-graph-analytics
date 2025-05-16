@@ -1,5 +1,4 @@
 # Patient Journey Quickstart
-## Last updated: 16 May 2025
 
 This example shows how to use Neo4j Graph Analytics within Snowflake to analyze life sciences data, focusing on patient journey analytics. Specifically, this example shows how to:
 

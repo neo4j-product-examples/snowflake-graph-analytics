@@ -1,7 +1,0 @@
-[patient_journey]
-account = "myaccount"
-user = "jdoe"
-password = "******"
-warehouse = "my-wh"
-database = "patient_db"
-schema = "public"

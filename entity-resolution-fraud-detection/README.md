@@ -1,13 +1,10 @@
 # Snowflake Graph Analytics
 ## Worked Example: Entity Resolution & Fraud Detection
+### Last Updated: 16 May 2025
 
 This example shows how to use Neo4j Graph Analytics within Snowflake to analyze your data, in this case focusing on peer-to-peer (P2P) financial transaction data. Specifically, this example shows how to: 
 1. Identify user clusters - i.e. __customer segmentation__ (graph algo: louvain community detection)
 2. __Find the most influential users__: who has the most money flowing through their account (graph algo:pagerank centrality)
-3. Perform __entity resolution__ & identify fraud risk accounts (graph algo: weakly connected components)
-
-### Video Reference
-See a recorded demo of this example [here (starting at 12:00)](https://www.youtube.com/watch?v=BiTA9OXHM44&t=708s)
 
 ## Dataset
 The P2P Dataset has the below schema with users sending money to each other in P2P transactions.  Each user can also have multiple identifiers, including credit cards, devices, and IP addresses.
@@ -26,7 +23,6 @@ The P2P Dataset has the below schema with users sending money to each other in P
 
 ## Running The Example
 
-### Steps
-1. Run [P2P_DEMO_STEP1_ALGOS.sql](P2P_DEMO_STEP1_ALGOS.sql) This will run all the graph algorithms and create all table for the entire worked example
-2. Run the notebook [P2P_DEMO_STEP2_EXPLORE.ipynb](P2P_DEMO_STEP2_EXPLORE.ipynb) to visualize clustering and influential/high-money-flow account analysis
-3. Run the notebook [P2P_DEMO_STEP3_ER.ipynb](P2P_DEMO_STEP3_ER.ipynb) to visualize the ER and additional fraud risk labeling analysis. 
+### Python Notebooks
+1. Run [Communities_in_P2P_Quickstart_with_Louvain_and_PageRank.ipynb](Communities_in_P2P_Quickstart_with_Louvain_and_PageRank.ipynb) This will run all the graph algorithms and create the tables for the entire worked example
+2. Run the notebook [Communities_In_P2P_Visualization.ipynb](Communities_In_P2P_Visualization.ipynb) to visualize clustering and influential/high-money-flow account analysis.
