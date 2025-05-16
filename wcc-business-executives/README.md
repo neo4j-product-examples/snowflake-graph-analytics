@@ -6,7 +6,7 @@ This example uses data that was sourced from `Relationship 360 - People Business
 
 This database must be copied into your Snowflake environment.
 
- A method is provided in `WCC Example.ipynb` to load the data from the `Relationship 360 - People Business Intelligence Sample (Massachusetts)` database.
+ A method is provided in `WCC Example.ipynb` to load the data from the [Relationship 360 - People Business Intelligence Sample (Massachusetts)](https://app.snowflake.com/marketplace/listing/GZ2FQZ711VO/equilar-relationship-360-people-business-intelligence-sample-massachusetts) database.
 
 ## Running WCC on the Business Data in Snowflake
 
