@@ -181,13 +181,14 @@ CALL neo4j_graph_analytics.graph.louvain('COMPUTE_POOL', {
 ```
 
 But broadly, you will need a few things:
+
 | Name                                      | Description                                                 | Our Value                                      |
 |-------------------------------------------|-------------------------------------------------------------|------------------------------------------------|
-| `EXAMPLE_DB.DATA_SCHEMA.NODES`           | A table for nodes                             | `p2p_demo.public.p2p_users_vw`                 |
-| `EXAMPLE_DB.DATA_SCHEMA.RELATIONSHIPS`   | A table for relationships                   | `p2p_demo.public.P2P_AGG_TRANSACTIONS`         |
-| `COMPUTE_POOL`                            | The size of the compute pool you would like to use| `CPU_X64_XS`                              |
-| `EXAMPLE_DB.DATA_SCHEMA.NODES_COMPONENTS`| A table to output results                    | `p2p_demo.public.p2p_users_vw_lou`             |
-| `NODES`                                   | A node label for our nodes                   | `p2p_users_vw`                                 |
+| `EXAMPLE_DB.DATA_SCHEMA.NODES`            | A table for nodes                                           | `p2p_demo.public.p2p_users_vw`                 |
+| `EXAMPLE_DB.DATA_SCHEMA.RELATIONSHIPS`    | A table for relationships                                   | `p2p_demo.public.P2P_AGG_TRANSACTIONS`         |
+| `COMPUTE_POOL`                            | The size of the compute pool you would like to use          | `CPU_X64_XS`                                   |
+| `EXAMPLE_DB.DATA_SCHEMA.NODES_COMPONENTS` | A table to output results                                   | `p2p_demo.public.p2p_users_vw_lou`             |
+| `NODES`                                   | A node label for our nodes                                  | `p2p_users_vw`                                 |
 
 
 ```sql

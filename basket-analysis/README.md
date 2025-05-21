@@ -9,7 +9,7 @@ The dataset is available on a Neo4j S3 bucket.
 
 ## Prerequisites
 
-### 1) Get Source Data
+### Get Source Data
 
 The notebook uses Snowflake Stages to copy data from a Neo4j S3 bucket.
 
