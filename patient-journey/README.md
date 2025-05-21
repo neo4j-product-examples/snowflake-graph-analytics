@@ -11,7 +11,7 @@ We used [Synthea](https://github.com/synthetichealth/synthea) to simulate realis
 
 ## Prerequisites
 
-### 1) Get Source Data
+### Get Source Data
 
 The notebook uses Snowflake Stages to copy data from a Neo4j S3 bucket.
 

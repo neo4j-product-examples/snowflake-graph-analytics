@@ -67,7 +67,7 @@ Before we run our algorithms, we need to set the proper permissions. But before 
 use role accountadmin;
 ```
 
-Next let's set up the necessary roles, permissions, and resource access to enable Graph Analytics to operate on data within the `p2p_demo.public schema`. It creates a consumer role (gds_role) for users and administrators, grants the GDS application access to read from and write to tables and views, and ensures that future tables are accessible. 
+Next let's set up the necessary roles, permissions, and resource access to enable Graph Analytics to operate on data within the `p2p_demo.public schema`. It creates a consumer role (gds_user_role) for users and administrators, grants the Neo4j Graph Analytics application access to read from and write to tables and views, and ensures that future tables are accessible. 
 
 It also provides the application with access to the required compute pool and warehouse resources needed to run graph algorithms at scale.
 
@@ -100,13 +100,13 @@ GRANT ALL PRIVILEGES ON FUTURE VIEWS IN SCHEMA P2P_DEMO.PUBLIC TO DATABASE ROLE 
 GRANT ALL PRIVILEGES ON ALL VIEWS IN SCHEMA P2P_DEMO.PUBLIC TO DATABASE ROLE gds_db_role;
 
 -- Compute and warehouse access
-GRANT USAGE ON WAREHOUSE GDSONSNOWFLAKE TO APPLICATION neo4j_graph_analytics;
+GRANT USAGE ON WAREHOUSE NEO4J_GRAPH_ANALYTICS_APP_WAREHOUSE TO APPLICATION neo4j_graph_analytics;
 ```
 
 Now we will switch to the role we just created:
 
 ```sql
-use role gds_role;
+use role gds_user_role;
 ```
 
 
@@ -161,7 +161,7 @@ You can find more information about writing this function in our [documentation]
 You can use this code block as an outline of what you need to fill in:
 
 ```
-CALL Neo4j_GDS_app.graph.louvain('COMPUTE_POOL', {
+CALL neo4j_graph_analytics.graph.louvain('COMPUTE_POOL', {
     'project': {
         'nodeTables': ['EXAMPLE_DB.DATA_SCHEMA.NODES'],
         'relationshipTables': {
@@ -253,5 +253,5 @@ By working with a P2P transaction dataset, you were able to:
 
 ### Resources
 
-- [Neo4j GDS Documentation](https://neo4j.com/docs/snowflake-graph-analytics/)
-- [Installing Neo4j GDS on SPCS](https://neo4j.com/docs/snowflake-graph-analytics/installation/)
+- [Neo4j Graph Analytics Documentation](https://neo4j.com/docs/snowflake-graph-analytics/)
+- [Installing Neo4j Graph Analytics on SPCS](https://neo4j.com/docs/snowflake-graph-analytics/installation/)
