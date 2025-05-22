@@ -1,13 +1,11 @@
-# Patient Journey Quickstart
-## Last updated: 16 May 2025
+# Basket Analysis Quickstart
 
-This example shows how to use Neo4j Graph Analytics within Snowflake to analyze life sciences data, focusing on patient journey analytics. Specifically, this example shows how to:
+This example shows how to use Neo4j Graph Analytics within Snowflake to calculate similarity between parts based on their orders.
 
-1. __Segment patient into cohorts__ based on medical history (graph algos: node similarity & louvain community detection)
+We will use the node_similarity algorithm to calculate the similarity.
 
 ## Dataset
-We used [Synthea](https://github.com/synthetichealth/synthea) to simulate realistic patient data. 
-
+The dataset is available on a Neo4j S3 bucket.
 
 ## Prerequisites
 
@@ -22,4 +20,4 @@ In the exercise, we will be working with structured, comma-delimited data that h
 ## Running the Example
 
 ### Steps
-The `Patient Journey.ipynb` notebook has the full example.
+The `Basket-Analysis.ipynb` notebook has the full example.
