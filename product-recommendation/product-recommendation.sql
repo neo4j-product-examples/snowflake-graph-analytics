@@ -99,8 +99,8 @@ USE DATABASE NEO4J_GRAPH_ANALYTICS;
 
 -- Next, we want to consider the warehouse that the application will use to execute queries.
 -- For this example, we use a MEDIUM-size warehouse, so we configure the application's warehouse accordingly
-ALTER WAREHOUSE NEO4J_GRAPH_ANALYTICS_app_warehouse SET WAREHOUSE_SIZE='MEDIUM';
-GRANT USAGE ON WAREHOUSE NEO4J_GRAPH_ANALYTICS_app_warehouse TO APPLICATION NEO4J_GRAPH_ANALYTICS;
+ALTER WAREHOUSE NEO4J_GRAPH_ANALYTICS_APP_WAREHOUSE SET WAREHOUSE_SIZE='MEDIUM';
+GRANT USAGE ON WAREHOUSE NEO4J_GRAPH_ANALYTICS_APP_WAREHOUSE TO APPLICATION NEO4J_GRAPH_ANALYTICS;
 -- A highly performant warehouse can speed up graph projections but does not affect algorithm computation.
 -- Especially if the views are more complex than shown in this example, a more performant warehouse is beneficial.
 -- The warehouse can then be brought back to a less expensive configuration after the projection is done.
@@ -137,10 +137,10 @@ GRANT CREATE TABLE ON SCHEMA        product_recommendation.gds TO APPLICATION NE
 -- This single procedure call runs the node similarity pipeline end-to-end using the `NEO4J_GRAPH_ANALYTICS.graph.node_similarity` procedure.
 -- It includes graph projection, computation of similarity, and writing back the results.
 CALL NEO4J_GRAPH_ANALYTICS.graph.node_similarity('CPU_X64_L', {
-    -- The 'project' section defines how to build the in-memory graph.
     -- The defaultTablePrefix simplifies table naming, and node/relationship tables are specified here.
+    'defaultTablePrefix': 'product_recommendation.gds',
+    -- The 'project' section defines how to build the in-memory graph.
     'project': {
-        'defaultTablePrefix': 'product_recommendation.gds',
         -- Tables 'parts' and 'orders' are used as node tables, table name will be treated as a node label.
         'nodeTables': ['parts', 'orders'],
         'relationshipTables': {
@@ -154,12 +154,12 @@ CALL NEO4J_GRAPH_ANALYTICS.graph.node_similarity('CPU_X64_L', {
             }
         }
     },
-    -- The 'compute' section sets algorithm-specific and performance parameters like concurrency for the algorithm.
-    'compute': { 'concurrency': 28 },
+    -- The 'compute' section sets algorithm-specific. This runs with the default parameters for the node similarity algorithm.
+    'compute': {},
     -- The 'write' section defines how and where to persist the results of the similarity computation.
     -- It writes the resulting relationships (similarity scores) between parts to a Snowflake table.
     'write': [{
-        'sourceLabel': 'parts', 'targetLabel': 'orders', 'outputTable': 'product_recommendation.gds.part_similar_to_part'
+        'sourceLabel': 'parts', 'targetLabel': 'orders', 'outputTable': 'part_similar_to_part'
     }]
 });
 
