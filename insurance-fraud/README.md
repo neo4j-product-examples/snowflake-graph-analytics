@@ -19,7 +19,7 @@ The Native App [Neo4j Graph Analytics](https://app.snowflake.com/marketplace/lis
 - A [Snowflake account](https://signup.snowflake.com/) with appropriate access to databases and schemas.
 - Neo4j Graph Analytics application installed from the Snowflake marketplace. Access the marketplace via the menu bar on the left hand side of your screen, as seen below: 
 
-<<<INSERT SNAPSHOT OF SNOWFLAKE MARKETPLACE IMAGE>>>
+![image](assets/marketplace.png)
 
 ### What You Will Build:
 - A method to compare complex insurance cases to one another and identify the ones that are at risk of being fraudulent.  
@@ -42,7 +42,7 @@ Duration 5
 ### Dataset Overview:
 This dataset is designed to model and analyze insurance claims for the purpose of identifying fraudulent activity using graph analytics. Given the complexity of the data model, all contextual relationships captured in the graph will be leveraged when comparing claims. This will enable deeper insights beyond isolated data points.
 
-For the purposes of the demo, the database will be named `I_DEMO`. Using the CSV, `insurance_claims_full.csv`, found here <<<ADD DATASET LINK>>>, we are going to create a new table called `insurance_claims_full` via the Snowsight data upload method. 
+For the purposes of the demo, the database will be named `I_DEMO`. Using the CSV, `insurance_claims_full.csv`, found [here](https://github.com/neo4j-product-examples/snowflake-graph-analytics/blob/main/insurance-fraud/insurance_claims_full.csv), we are going to create a new table called `insurance_claims_full` via the Snowsight data upload method. 
 
 Follow through this Snowflake [documentation](https://docs.snowflake.com/en/user-guide/data-load-web-ui) on creating a table from 'Load data using the web interface'.
 
@@ -57,7 +57,7 @@ Duration 5
 
 ### Import the Notebook
 - We’ve provided a Colab notebook to walk you through each SQL and Python step—no local setup required!
-- Download the .ipynb found [here](https://github.com/neo4j-product-examples/snowflake-graph-analytics/blob/main/insurance-fraud/INSURANCE_SNOWFLAKE_DEMO.ipynb), and import the notebook into snowflake.
+- Download the .ipynb found [here](https://github.com/neo4j-product-examples/snowflake-graph-analytics/blob/main/insurance-fraud/INSURANCE_SNOWFLAKE_DEMO.ipynb), and import the notebook into snowflake. Just ensure that each cell is read by snowflake as a SQL cell.
 
 ### Permissions
 One of the most usefull aspects of Snowflake is the ability to have roles with specific permissions, so that you can have many people working in the same database without worrying about security. The Neo4j app requires the creation of a few different roles. But before we get started granting different roles, we need to ensure that you are using `accountadmin` to grant and create roles. Lets do that now:
@@ -126,8 +126,6 @@ The first column should be called `nodeId`, which uniquely identifies each node 
 We need to have columns called `sourceNodeId` and `targetNodeId`, representing the start and end nodes of each relationship.
 
 To get ready for Graph Analytics, reshape your tables as follows:
-
-
 
 ### **NODES**
 
@@ -236,6 +234,15 @@ SELECT DISTINCT months_as_customer_bucket::STRING AS nodeid FROM node_months_as_
 ```
 select * from all_nodes
 ```
+| NODEID |
+| ------ |
+| 798579 |
+| 463727 |
+| 718428 |
+| 439844 |
+| 999435 |
+| 162004 |
+
 Below we will create the relationship tables.
 
 ```
@@ -324,12 +331,33 @@ You can also preview the data of these tables from the I_DEMO database under pub
 select * from rel_policy_police_report_available
 ```
 
+| POLICY_NUMBER | POLICE_REPORT_AVAILABLE |
+| ------------- | ----------------------- |
+| 521585        | YES                     |
+| 342868        | ?                       |
+| 687698        | NO                      |
+| 227811        | NO                      |
+| 367455        | NO                      |
+| 104594        | NO                      |
+| 413978        | ?                       |
+| 429027        | YES                     |
+| 485665        | YES                     |
+| 636550        | ?                       |
+
 ```
 select * from all_relationships
 ```
 
+| SOURCENODEID | TARGETNODEID |
+| ------------ | ------------ |
+| 786432       | YES          |
+| 645723       | YES          |
+| 327856       | ?            |
+| 737252       | NO           |
+| 281388       | YES          |
 
 ## Insurance Claims Embeddings and Similarity
+
 Duration 10
 
 Uncovering complex fraud patterns in insurance claims requires more than tracing obvious links between entities. To detect subtle signals of collusion or anomalous behavior, we turn to **structural embeddings** — numerical summaries that capture how each claim fits within the broader network.
@@ -391,6 +419,14 @@ SELECT
   embedding
 FROM i_demo.public.all_nodes_fast_rp;
 ```
+| NODEID | EMBEDDING                       |
+| ------ | ------------------------------- |
+| 798579 | [ -0.021996975, 0.07005992, ... |
+| 463727 | [ 0.08557614, 0.14697301, ...   |
+| 718428 | [ -0.09145945, 0.12990925, ...  |
+
+**Note: The embedding values displayed above are illustrative and truncated as there are 128 dimensions.**
+
 Now that we have generated node embeddings, we can now proceed to use these in KNN similarity detection algorithm.### K-Nearest Neighbors (KNN)
 
 With embeddings in place, KNN helps us find structurally similar claims — even if they’re not directly connected. It compares the cosine similarity of embeddings to rank the top matches for each node.
@@ -434,10 +470,17 @@ SELECT
     COUNT(*) AS row_count
 FROM i_demo.public.claims_knn_similarity
 GROUP BY score
-ORDER BY score
-     
+ORDER BY score DESC
 ```
+| SCORE              | ROW_COUNT |
+| ------------------ | --------- |
+| 1                  | 136       |
+| 0.9917478165699811 | 2         |
+| 0.9915239134238771 | 2         |
+| 0.9914012968632966 | 4         |
+
 The KNN results show that many nodes have very high structural similarity scores (mostly above 0.92), indicating they occupy very similar positions in the graph. This suggests that these claims or entities may share common patterns or connections, potentially signaling coordinated behavior. High-scoring pairs are good candidates for closer review to detect possible collusion or fraud.
+
 ## Visualizing Your Graph (Experimental)
 Duration 5
 
@@ -506,7 +549,6 @@ components.html(
     fraud_knn_viz_top_50.to_pandas().loc[0]["VISUALIZE"],
     height=600
 )
-
 ```
 ## Finding Additional Fraud
 Duration 5
