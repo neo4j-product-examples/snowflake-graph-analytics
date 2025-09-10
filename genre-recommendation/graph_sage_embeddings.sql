@@ -34,23 +34,16 @@ GRANT DATABASE ROLE graph_analytics_db_role TO APPLICATION NEO4J_GRAPH_ANALYTICS
 
 -- Grant consumer role access to tables created by the application
 GRANT USAGE ON DATABASE genre_classification_db TO ROLE gds_role;
-GRANT USAGE ON SCHEMA genre_classification_db.imdb TO ROLE gds_role;
 GRANT USAGE ON SCHEMA genre_classification_db.results TO ROLE gds_role;
 GRANT SELECT ON FUTURE TABLES IN SCHEMA genre_classification_db.results TO ROLE gds_role;
-GRANT SELECT ON FUTURE TABLES IN SCHEMA genre_classification_db.imdb TO ROLE gds_role;
-GRANT SELECT ON ALL TABLES IN SCHEMA genre_classification_db.imdb TO ROLE gds_role;
-GRANT SELECT ON ALL TABLES IN SCHEMA genre_classification_db.results TO ROLE gds_role;
-GRANT SELECT ON ALL VIEWS IN SCHEMA genre_classification_db.imdb TO ROLE gds_role;
 
 GRANT USAGE ON WAREHOUSE FS_WH TO ROLE gds_role;
-GRANT USAGE ON WAREHOUSE FS_WH TO APPLICATION NEO4J_GRAPH_ANALYTICS;
-GRANT USAGE ON WAREHOUSE NEO4J_GRAPH_ANALYTICS_APP_WAREHOUSE TO APPLICATION NEO4J_GRAPH_ANALYTICS;
 
 USE ROLE gds_role;
 
 USE DATABASE genre_classification_db;
 USE SCHEMA results;
-USE WAREHOUSE FS_WH;
+USE WAREHOUSE <A_WAREHOUSE>;
 
 -- Create a view for movie table to exclude the genre column
 USE ROLE accountadmin;
@@ -64,7 +57,7 @@ GRANT SELECT ON ALL VIEWS IN SCHEMA genre_classification_db.imdb TO ROLE gds_rol
 USE ROLE gds_role;
 
 -- Training stage of the GraphSAGE unsupervised algorithm
-CALL NEO4J_GRAPH_ANALYTICS.graph.gs_unsup_train('HIGHMEM_X64_L', {
+CALL NEO4J_GRAPH_ANALYTICS.graph.gs_unsup_train('GPU_NV_S', {
     'project': {
         'defaultTablePrefix': 'genre_classification_db.imdb',
         'nodeTables': ['actor', 'director', 'movie_plot'],
@@ -82,7 +75,7 @@ CALL NEO4J_GRAPH_ANALYTICS.graph.gs_unsup_train('HIGHMEM_X64_L', {
 });
 
 -- Prediction stage of the GraphSAGE unsupervised algorithm - computing embeddings
-CALL NEO4J_GRAPH_ANALYTICS.graph.gs_unsup_predict('HIGHMEM_X64_L', {
+CALL NEO4J_GRAPH_ANALYTICS.graph.gs_unsup_predict('GPU_NV_S', {
     'project': {
         'defaultTablePrefix': 'genre_classification_db.imdb',
         'nodeTables': ['actor', 'director', 'movie_plot'],
