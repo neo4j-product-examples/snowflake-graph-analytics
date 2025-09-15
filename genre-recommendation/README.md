@@ -88,13 +88,16 @@ uv run ./upload_imdb_to_snowflake.py --connection_name=my_connection
 
 Before we run our algorithms, we need to set the proper permissions. Ensure you are using `accountadmin` to grant and create roles:
 
-```sql
+```
 USE ROLE accountadmin;
 ```
 
-Next, let's set up the necessary roles, permissions, and resource access to enable Graph Analytics to operate on data within the `imdb.public` schema:
+Next, let's set up the necessary roles, permissions, and resource access to enable Graph Analytics to operate on data within the `imdb.public` schema. It creates a consumer role (gds_role) for users and administrators, grants the Neo4j Graph Analytics application access to read from and write to tables and views, and ensures that future tables are accessible.
 
-```sql
+It also provides the application with access to the required compute pool and warehouse resources needed to run graph algorithms at scale.
+
+```
+-- Create a consumer role for users and admins of the GDS application
 CREATE ROLE IF NOT EXISTS gds_role;
 GRANT APPLICATION ROLE NEO4J_GRAPH_ANALYTICS.app_user TO ROLE gds_role;
 GRANT APPLICATION ROLE NEO4J_GRAPH_ANALYTICS.app_admin TO ROLE gds_role;
@@ -130,7 +133,7 @@ GRANT SELECT ON FUTURE TABLES IN SCHEMA genre_classification_db.results TO ROLE 
 
 Then switch to the role we created:
 
-```sql
+```
 USE ROLE gds_role;
 ```
 
@@ -146,7 +149,7 @@ To get nodes embeddings using GraphSAGE, a user need to train a model and then u
 
 Table `imdb.movie` contains an extra column `GENRE` which is not used in this example. Let's create a view without this column.
 
-```sql
+```
 CREATE VIEW IF NOT EXISTS genre_classification_db.imdb.movie_plot AS
 SELECT nodeid, plot_keywords
 FROM genre_classification_db.imdb.movie;
@@ -158,7 +161,7 @@ GRANT SELECT ON ALL VIEWS IN SCHEMA genre_classification_db.imdb TO ROLE gds_rol
 
 Training a GraphSAGE model can be done with the following command:
 
-```sql
+```
 -- Training stage of the GraphSAGE unsupervised algorithm
 CALL NEO4J_GRAPH_ANALYTICS.graph.gs_unsup_train('GPU_NV_S', {
     'project': {
@@ -184,7 +187,7 @@ The model will be save into internal stage of the Neo4j Graph Analytics applicat
 
 The trained model can be used to generate embeddings for all nodes in the graph. The following command generates embeddings and stores them in a new table `results.movie_embeddings`:
 
-```sql
+```
 -- Prediction stage of the GraphSAGE unsupervised algorithm - computing embeddings
 CALL NEO4J_GRAPH_ANALYTICS.graph.gs_unsup_predict('GPU_NV_S', {
     'project': {
@@ -206,13 +209,14 @@ CALL NEO4J_GRAPH_ANALYTICS.graph.gs_unsup_predict('GPU_NV_S', {
 ```
 
 The resulting table `results.movie_embeddings` will contain the node IDs and their corresponding embeddings.
-```sql
+
+```
 SELECT * FROM genre_classification_db.results.movie_embeddings LIMIT 5;
 ```
 
 The model can be dropped when it is no longer needed:
 
-```sql
+```
 CALL NEO4J_GRAPH_ANALYTICS.graph.drop_model('unsup-imdb');
 ```
 
@@ -224,7 +228,7 @@ GraphSAGE can also be used for node classification tasks. In this example, we wi
 ### Model training
 Training a GraphSAGE model for node classification can be done with the following command:
 
-```sql
+```
 -- Training stage of the GraphSAGE node classification algorithm
 CALL NEO4J_GRAPH_ANALYTICS.graph.gs_nc_train('GPU_NV_S', {
     'project': {
@@ -252,7 +256,7 @@ The model will be save into internal stage of the Neo4j Graph Analytics applicat
 ### Making predictions
 The trained model can be used to make predictions on the movie nodes. The following command generates predictions and stores them in a new table `results.movie_genre_predictions`:
 
-```sql
+```
 -- Prediction stage of the GraphSAGE node classification algorithm
 CALL NEO4J_GRAPH_ANALYTICS.graph.gs_nc_predict('GPU_NV_S', {
     'project': {
@@ -272,13 +276,34 @@ CALL NEO4J_GRAPH_ANALYTICS.graph.gs_nc_predict('GPU_NV_S', {
     }]
 });
 ```
+
 The resulting table `results.genre_predictions` will contain the node IDs, their predicted genres, and the associated probabilities.
-```sql
+
+```
 SELECT * FROM genre_classification_db.results.genre_predictions LIMIT 5;
 ```
 
 The model can be dropped when it is no longer needed:
 
-```sql
+```
 CALL NEO4J_GRAPH_ANALYTICS.graph.drop_model('nc-imdb');
 ```
+
+## Conclusions And Resources
+
+Duration: 2
+
+In this quickstart, you learned how to bring the power of graph insights into Snowflake using Neo4j Graph Analytics.
+
+### What You Learned
+
+Using our IMDB dataset, you were able to:
+
+1. Set up the [Neo4j Graph Analytics](https://app.snowflake.com/marketplace/listing/GZTDZH40CN/neo4j-neo4j-graph-analytics) application within Snowflake.
+2. Prepare and project your data into a graph model (movies, actors, and directors as nodes with relationships).
+3. Generate graph embeddings using GraphSAGE for recommendation systems.
+4. Perform node classification to predict movie genres using graph neural networks.
+
+### Resources
+
+- [Neo4j Graph Analytics GraphSAGE Documentation Page](https://neo4j.com/docs/snowflake-graph-analytics/current/algorithms/graphsage/)
