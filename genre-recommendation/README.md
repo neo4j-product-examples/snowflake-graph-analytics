@@ -6,7 +6,7 @@ Duration: 2
 
 ### What Is Neo4j Graph Analytics For Snowflake? 
 
-Neo4j helps organizations find hidden relationships and patterns across billions of data connections deeply, easily, and quickly. **Neo4j Graph Analytics for Snowflake** brings to the power of graph directly to Snowflake, allowing users to run 65+ ready-to-use algorithms on their data, all without leaving Snowflake! 
+Neo4j helps organizations find hidden relationships and patterns across billions of data connections deeply, easily, and quickly. **Neo4j Graph Analytics for Snowflake** brings the power of graph directly to Snowflake, allowing users to run 65+ ready-to-use algorithms on their data, all without leaving Snowflake! 
 
 ### Genre Recommendation with IMDB Data
 
@@ -25,8 +25,8 @@ Using Graph Analytics for Snowflake, we can build powerful recommendation system
 
 ### What You Will Build
 
-- A notebook that performs genre recommendation using GraphSAGE on IMDB data
 - Graph embeddings for movie recommendation systems
+- A notebook that performs genre recommendation using GraphSAGE on IMDB data
 
 ### What You Will Learn
 
@@ -138,12 +138,12 @@ USE ROLE gds_role;
 ```
 
 
-## Generation graph embeddings with GraphSAGE
+## Generating graph embeddings with GraphSAGE
 
 Duration: 20
 GraphSAGE is a powerful algorithm for generating node embeddings by sampling and aggregating features from a node's local neighborhood. This approach allows us to capture the structural and feature information of nodes in a graph, making it ideal for tasks like node classification and recommendation systems.
 
-To get nodes embeddings using GraphSAGE, a user need to train a model and then use it to generate embeddings.
+To get node embeddings using GraphSAGE, users need to train a model and then use it to generate embeddings.
 
 ### Data preparation
 
@@ -181,7 +181,7 @@ CALL NEO4J_GRAPH_ANALYTICS.graph.gs_unsup_train('GPU_NV_S', {
 });
 ```
 
-The model will be save into internal stage of the Neo4j Graph Analytics application. This model can be refferred by its name `unsup-imdb` in the next step.
+The model will be saved into the internal stage of the Neo4j Graph Analytics application. This model can be referred to by its name `unsup-imdb` in the next step.
 
 ### Generating embeddings
 
@@ -251,10 +251,10 @@ CALL NEO4J_GRAPH_ANALYTICS.graph.gs_nc_train('GPU_NV_S', {
 });
 ```
 
-The model will be save into internal stage of the Neo4j Graph Analytics application. This model can be refferred by its name `nc-imdb` in the next step.
+The model will be saved into the internal stage of the Neo4j Graph Analytics application. This model can be referred to by its name `nc-imdb` in the next step.
 
 ### Making predictions
-The trained model can be used to make predictions on the movie nodes. The following command generates predictions and stores them in a new table `results.movie_genre_predictions`:
+The trained model can be used to make predictions on the movie nodes. The following command generates predictions and stores them in a new table `results.genre_predictions`:
 
 ```
 -- Prediction stage of the GraphSAGE node classification algorithm
