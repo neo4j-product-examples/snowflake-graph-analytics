@@ -16,7 +16,7 @@ Using Graph Analytics for Snowflake, we can build powerful recommendation system
 
 ### Prerequisites
 
-- The Native App [Neo4j Graph Analytics](https://app.snowflake.com/marketplace/listing/GZTDZH40CN) for Snowflake
+- The native app [Neo4j Graph Analytics](https://app.snowflake.com/marketplace/listing/GZTDZH40CN) for Snowflake
 
 ### What You Will Need
 
@@ -69,7 +69,10 @@ uv run ./upload_imdb_to_snowflake.py --snowflake_account SNOWFLAKE_ACCOUNT \
                                      --snowflake_database SNOWFLAKE_DATABASE \
                                      --snowflake_schema SNOWFLAKE_SCHEMA
 ```
-or if you have a connection set up in Snowflake. See [Snowflake documentation](https://docs.snowflake.com/en/developer-guide/snowpark/python/creating-session#connect-by-using-the-connections-toml-file).:
+
+If you have a connection config file for Snowflake you can select one of your configured connections.
+See [Snowflake documentation](https://docs.snowflake.com/en/developer-guide/snowpark/python/creating-session#connect-by-using-the-connections-toml-file).
+
 ```bash
 uv run ./upload_imdb_to_snowflake.py --connection_name=my_connection
 ```
@@ -142,7 +145,8 @@ USE ROLE gds_role;
 
 Duration: 20
 
-GraphSAGE is a powerful algorithm for generating node embeddings by sampling and aggregating features from a node's local neighborhood. This approach allows us to capture the structural and feature information of nodes in a graph, making it ideal for tasks like node classification and recommendation systems.
+GraphSAGE is a powerful algorithm for generating node embeddings by sampling and aggregating features from a node's local neighborhood.
+This approach allows us to capture the structural and feature information of nodes in a graph, making it ideal for tasks like node classification and recommendation systems.
 
 To get node embeddings using GraphSAGE, users need to train a model and then use it to generate embeddings.
 
@@ -225,7 +229,9 @@ CALL NEO4J_GRAPH_ANALYTICS.graph.drop_model('unsup-imdb');
 
 Duration: 20
 
-GraphSAGE can also be used for node classification tasks. In this example, we will classify movies into genres based on their features and relationships in the graph.
+GraphSAGE can also be used for node classification tasks.
+In this example, we will classify movies into genres based on their features and relationships in the graph.
+
 
 ### Model training
 Training a GraphSAGE model for node classification can be done with the following command:
