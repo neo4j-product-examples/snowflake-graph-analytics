@@ -141,6 +141,7 @@ USE ROLE gds_role;
 ## Generating graph embeddings with GraphSAGE
 
 Duration: 20
+
 GraphSAGE is a powerful algorithm for generating node embeddings by sampling and aggregating features from a node's local neighborhood. This approach allows us to capture the structural and feature information of nodes in a graph, making it ideal for tasks like node classification and recommendation systems.
 
 To get node embeddings using GraphSAGE, users need to train a model and then use it to generate embeddings.
