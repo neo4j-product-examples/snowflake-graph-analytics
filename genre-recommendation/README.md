@@ -223,6 +223,7 @@ CALL NEO4J_GRAPH_ANALYTICS.graph.drop_model('unsup-imdb');
 ## Node Classification with GraphSAGE
 
 Duration: 20
+
 GraphSAGE can also be used for node classification tasks. In this example, we will classify movies into genres based on their features and relationships in the graph.
 
 ### Model training
