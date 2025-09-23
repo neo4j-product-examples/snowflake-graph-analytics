@@ -37,7 +37,7 @@ GRANT USAGE ON DATABASE genre_classification_db TO ROLE gds_role;
 GRANT USAGE ON SCHEMA genre_classification_db.results TO ROLE gds_role;
 GRANT SELECT ON FUTURE TABLES IN SCHEMA genre_classification_db.results TO ROLE gds_role;
 
-GRANT USAGE ON WAREHOUSE FS_WH TO ROLE gds_role;
+GRANT USAGE ON WAREHOUSE <A_WAREHOUSE> TO ROLE gds_role;
 
 USE ROLE gds_role;
 
